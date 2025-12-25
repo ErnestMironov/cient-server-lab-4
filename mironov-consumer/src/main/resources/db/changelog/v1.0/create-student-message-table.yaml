@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-utmn-schema
+      author: mironov
+      changes:
+        - sql:
+            sql: CREATE SCHEMA IF NOT EXISTS utmn;
+  - changeSet:
+      id: create-student-message-table
+      author: mironov
+      changes:
+        - createTable:
+            schemaName: utmn
+            tableName: student_message
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: full_name
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: passport
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamptz
+                  constraints:
+                    nullable: false
+        - sql:
+            sql: COMMENT ON TABLE utmn.student_message IS 'Сообщения о студентах из RabbitMQ';
+        - sql:
+            sql: COMMENT ON COLUMN utmn.student_message.full_name IS 'ФИО студента';
+        - sql:
+            sql: COMMENT ON COLUMN utmn.student_message.passport IS 'Паспорт студента';
+        - sql:
+            sql: COMMENT ON COLUMN utmn.student_message.created_at IS 'Время создания сообщения';
+
